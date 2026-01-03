@@ -1,0 +1,36 @@
+---
+- name: "Delete inventory sources"
+  uri:
+    url: "{{ ansible_url }}/inventory_sources/{{ item }}/"
+    method: DELETE
+    status_code: [204, 404]
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+  loop: "{{ inventory_source_ids | default([]) }}"
+  become: false
+
+- name: "Get inventory"
+  uri:
+    url: "{{ ansible_url }}/inventories/{{ inventory_id }}/"
+    method: GET
+    status_code: [200, 404]
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+  register: inv_get
+  become: false
+
+- name: "Delete inventory if tagged"
+  uri:
+    url: "{{ ansible_url }}/inventories/{{ inventory_id }}/"
+    method: DELETE
+    status_code: [204, 404]
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+  when: inv_get.status == 200 and inv_get.json.name == adhoc_tag
+  become: false

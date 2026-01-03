@@ -1,0 +1,20 @@
+dpr_base_url: "https://dpr-backend/export/dynamic/pamela_srv?"
+dpr_query: "filter=HOST_ID%3A{{ inventory_hostname_short | upper }}&fields=APPLICATION_NAME_VALUE%2CHOST_ID%2CAPPLICATION_BAM_VALUE%2CAPPLICATION_AUID_VALUE&format=json"
+
+opensearch_host: "https://elk-platform-es.org"
+opensearch_index: "{{ data_env }}-middle-products"
+opensearch_path: "_update_by_query"
+opensearch_qs: "pretty&refresh"
+opensearch_url: "{{ opensearch_host }}/{{ opensearch_index }}/{{ opensearch_path }}?{{ opensearch_qs }}"
+
+elastic_url: https://elk-platform-es.org
+sso_template_id: 3333
+organization_id: 6
+scm_credential_name: "Middle - Bucket"
+scm_credential_id: 123
+project_id: 3332
+
+instance_groups_id:
+  EMEA: 1
+  AMER: 6
+  APAC: 7

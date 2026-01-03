@@ -1,0 +1,5 @@
+---
+- name: "Build unique tag"
+  set_fact:
+    adhoc_tag: "adhoc-template-{{ ansible_date_time.epoch }}-{{ inventory_hostname | default('localhost') }}"
+  run_once: true

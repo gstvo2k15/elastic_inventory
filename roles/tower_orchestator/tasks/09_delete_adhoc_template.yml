@@ -1,0 +1,24 @@
+---
+- name: "Get template"
+  uri:
+    url: "{{ ansible_url }}/job_templates/{{ adhoc_template_id }}/"
+    method: GET
+    status_code: [200, 404]
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+  register: jt_get
+  become: false
+
+- name: "Delete adhoc job template if tagged"
+  uri:
+    url: "{{ ansible_url }}/job_templates/{{ adhoc_template_id }}/"
+    method: DELETE
+    status_code: [204, 404]
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+  when: jt_get.status == 200 and jt_get.json.name == adhoc_tag
+  become: false

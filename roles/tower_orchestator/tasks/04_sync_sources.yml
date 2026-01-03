@@ -1,0 +1,31 @@
+---
+- name: "Trigger update for each inventory source"
+  uri:
+    url: "{{ ansible_url }}/inventory_sources/{{ item }}/update/"
+    method: POST
+    status_code: [202, 200, 201]
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+    body_format: json
+    body: {}
+  loop: "{{ inventory_source_ids }}"
+  register: updates
+  become: false
+
+- name: "Wait inventory updates to finish"
+  uri:
+    url: "{{ ansible_url }}/inventory_updates/{{ item.json.inventory_update }}/"
+    method: GET
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+  register: upd_status
+  until: upd_status.json.status in ['successful','failed','error','canceled']
+  retries: 60
+  delay: 5
+  loop: "{{ updates.results }}"
+  loop_control:
+    label: "{{ item.json.inventory_update }}"

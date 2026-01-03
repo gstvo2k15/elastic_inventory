@@ -1,0 +1,31 @@
+---
+- name: "Create adhoc inventory"
+  uri:
+    url: "{{ ansible_url }}/inventories/"
+    method: POST
+    status_code: [200, 201]
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+    body_format: json
+    body:
+      name: "{{ adhoc_tag }}"
+      organization: "{{ organization_id | int }}"
+  register: inv
+  become: false
+
+- name: "Set inventory_id"
+  set_fact:
+    inventory_id: "{{ inv.json.id }}"
+
+- name: "Check how many hosts are present in the inventory"
+  uri:
+    url: "{{ ansible_url }}/inventories/{{ inventory_id }}/hosts/"
+    method: GET
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+  register: host_check
+  ignore_errors: true

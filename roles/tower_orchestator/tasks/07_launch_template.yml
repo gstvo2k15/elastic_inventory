@@ -1,0 +1,21 @@
+---
+- name: "Launch adhoc template"
+  uri:
+    url: "{{ ansible_url }}/job_templates/{{ adhoc_template_id }}/launch/"
+    method: POST
+    status_code: [200, 201]
+    headers:
+      Accept: application/json
+      Authorization: "Bearer {{ svc_token }}"
+    validate_certs: false
+    body_format: json
+    body:
+      limit: "{{ launch_limit }}"
+      credentials:
+        - "{{ cred_id | int }}"
+  register: job_info
+  become: false
+
+- name: "Show job id"
+  debug:
+    msg: "Job ID: {{ job_info.json.id }}"

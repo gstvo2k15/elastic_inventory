@@ -1,9 +1,20 @@
 ---
 project_branch: "feature/tower-inventory-templates"
 
-ini_files:
-  - "apache_sso.ini"
-  - "apache_sso_ibm_vdc.ini"
+product_ini_files:
+  apache:
+    - "apache.ini"
+    - "apache_sso_ibm_vdc.ini"
+  tomcat:
+    - "tomcat.ini"
+  weblogic:
+    - "weblogic.ini"
+
+product_playbook:
+  apache: "apache.yml"
+  sso: "sso.yml"
+  tomcat: "tomcat.yml"
+  weblogic: "weblogic.yml"
 
 region_credentials:
   emea: 21
@@ -13,5 +24,3 @@ region_credentials:
   ets: 146
 
 selected_cred_id: "{{ region_credentials[region] }}"
-
-playbook_to_run: "sso.yaml"

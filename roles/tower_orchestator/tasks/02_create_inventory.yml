@@ -1,4 +1,34 @@
 ---
+- name: "Normalize product"
+  set_fact:
+    product_lc: "{{ product | lower }}"
+
+- name: "Validate product"
+  assert:
+    that:
+      - product_lc in product_playbook
+      - product_lc in allowed_inventories
+
+- name: "Select playbook_to_run and ini_files (single)"
+  set_fact:
+    playbook_to_run: "{{ product_playbook[product_lc] }}"
+    ini_files:
+      - "{{ allowed_inventories[product_lc] }}"
+
+- name: "Normalize inventory_name"
+  set_fact:
+    inventory_name: "{{ inventory_name | lower }}"
+
+- name: "Validate inventory_name"
+  assert:
+    that:
+      - inventory_name in allowed_inventories
+
+- name: "Select single ini_file"
+  set_fact:
+    ini_files:
+      - "{{ allowed_inventories[inventory_name] }}"
+
 - name: "Create adhoc inventory"
   uri:
     url: "{{ ansible_url }}/inventories/"

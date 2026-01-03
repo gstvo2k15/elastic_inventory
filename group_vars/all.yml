@@ -18,3 +18,11 @@ instance_groups_id:
   EMEA: 1
   AMER: 6
   APAC: 7
+
+allowed_inventories:
+  apache: "apache.ini"
+  sso: "sso.ini"
+  tomcat: "tomcat.ini"
+  weblogic: "weblogic.ini"
+
+ini_dir: "inventories"

@@ -3,3 +3,21 @@
   set_fact:
     adhoc_tag: "adhoc-template-{{ ansible_date_time.epoch }}-{{ inventory_hostname | default('localhost') }}"
   run_once: true
+
+- name: "Normalize inputs"
+  set_fact:
+    product: "{{ product | lower }}"
+    region: "{{ region | upper }}"
+    data_env: "{{ data_env | lower }}"
+    location: "{{ location | upper }}"
+
+- name: "Validate product"
+  assert:
+    that:
+      - product in product_ini_files
+      - product in product_playbook
+
+- name: "Select ini_files and playbook_to_run"
+  set_fact:
+    ini_files: "{{ product_ini_files[product] }}"
+    playbook_to_run: "{{ product_playbook[product] }}"

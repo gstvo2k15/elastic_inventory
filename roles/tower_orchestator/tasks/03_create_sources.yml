@@ -14,7 +14,7 @@
       inventory: "{{ inventory_id | int }}"
       source: "scm"
       source_project: "{{ project_id | int }}"
-      source_path: "{{ item }}"
+      source_path: "{{ ini_dir }}/{{ item }}"
       update_on_launch: true
   loop: "{{ ini_files }}"
   register: sources

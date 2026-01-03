@@ -1,17 +1,2 @@
 ---
 project_branch: "feature/tower-inventory-templates"
-
-ini_files:
-  - "apache_sso.ini"
-  - "apache_sso_ibm_vdc.ini"
-
-region_credentials:
-  emea: 21
-  apac: 30
-  amer: 26
-  dmzi: 24
-  ets: 146
-
-selected_cred_id: "{{ region_credentials[region] }}"
-
-playbook_to_run: "sso.yaml"

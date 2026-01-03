@@ -8,13 +8,44 @@ opensearch_qs: "pretty&refresh"
 opensearch_url: "{{ opensearch_host }}/{{ opensearch_index }}/{{ opensearch_path }}?{{ opensearch_qs }}"
 
 elastic_url: https://elk-platform-es.org
-sso_template_id: 3333
+
 organization_id: 6
-scm_credential_name: "Middle - Bucket"
 scm_credential_id: 123
-project_id: 3332
+project_id: 3332 ##REVISAR y cambiar
 
 instance_groups_id:
   EMEA: 1
   AMER: 6
   APAC: 7
+
+allowed_inventories:
+  apache: "apache.ini"
+  sso: "sso.ini"
+  tomcat: "tomcat.ini"
+  weblogic: "weblogic.ini"
+
+product_playbook:
+  apache: "apache.yml"
+  sso: "sso.yml"
+  tomcat: "tomcat.yml"
+  weblogic: "weblogic.yml"
+
+ini_dir: "inventories"
+
+product_ini_files:
+  apache:
+    - "apache.ini"
+    - "apache_sso_ibm_vdc.ini"
+  tomcat:
+    - "tomcat.ini"
+  weblogic:
+    - "weblogic.ini"
+
+region_credentials:
+  emea: 21
+  apac: 30
+  amer: 26
+  dmzi: 24
+  ets: 146
+
+selected_cred_id: "{{ region_credentials[region] }}"
